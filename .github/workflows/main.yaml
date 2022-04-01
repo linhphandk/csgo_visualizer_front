@@ -1,5 +1,5 @@
 name: csgo visualizer front
-on: ["push", "pull_request", "merge"]
+on: ["push", "pull_request"]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,4 +14,5 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm install
+      - run: npm run lint
       - run: npm test
