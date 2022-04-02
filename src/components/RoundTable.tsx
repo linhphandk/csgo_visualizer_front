@@ -51,8 +51,8 @@ const RoundTable:FC<IRoundTableProps> = ({round, ct, terrorist})=>{
     const averageDamagePerRound = (Math.round(
         (player.totalDamage/round.number + Number.EPSILON) * 100) / 100)
         .toFixed(2);
-    const headshotPercentage = ((player.headshots/player.kills)*100);
 
+    const headshotPercentage = ((player.headshots/player.kills)*100);
     return (
       <StyledHeader key={player.name}>
         <h5>{player.name}</h5>
@@ -65,7 +65,7 @@ const RoundTable:FC<IRoundTableProps> = ({round, ct, terrorist})=>{
         <StyledCell>{averageDamagePerRound}</StyledCell>
         <StyledCell>
           {
-            isNaN(headshotPercentage) +'  %'?'-':headshotPercentage.toFixed(2)
+            isNaN(headshotPercentage)?'-':headshotPercentage.toFixed(0)+' %'
           }
         </StyledCell>
       </StyledHeader>
