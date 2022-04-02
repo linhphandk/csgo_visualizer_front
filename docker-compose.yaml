@@ -1,0 +1,14 @@
+# Use root/example as user/password credentials
+version: '3.1'
+volumes:
+  node_modules:
+services:
+
+  mongo:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
