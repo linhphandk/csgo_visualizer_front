@@ -3,6 +3,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {addPlayerStats} from './App.helpers';
 import {ITeam, IRoundResponse, IRound, TEAM_SIDES} from './App.interface';
 import {StyledPage} from './App.styled';
+import Banner from './components/Banner';
 import RoundTable from './components/RoundTable';
 import Player from './models/Player';
 import Round from './models/Round';
@@ -47,7 +48,6 @@ function getPlayerStats(rounds: IRound[], ct: ITeam, terrorist:ITeam) {
   return ROUNDS;
 }
 
-
 const App:FC = ()=>{
   const [playerStats, setPlayerStats] = useState<Round[]>([]);
   const [ct, setCt] = useState<ITeam|undefined>(undefined);
@@ -78,6 +78,13 @@ const App:FC = ()=>{
 
   return (
     <StyledPage>
+      {ct && terrorist && playerStats.length>0?
+      <Banner
+        ctName={ct.name}
+        tName={terrorist.name}
+        ctScore={playerStats[playerStats.length-1].result.t}
+        tScore={playerStats[playerStats.length-1].result.ct}
+      />:<></>}
       {roundsJsx}
     </StyledPage>
   );
