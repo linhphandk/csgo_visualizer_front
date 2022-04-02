@@ -4,7 +4,7 @@ volumes:
   node_modules:
 services:
 
-  mongo:
+  csgo_front:
     build: .
     restart: always
     ports:
