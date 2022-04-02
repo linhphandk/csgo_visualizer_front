@@ -4,7 +4,7 @@ import Round, {TEAMS} from './Round';
 describe('Round', ()=>{
   let round:Round;
   beforeEach(()=>{
-    round = new Round(1, 'test');
+    round = new Round(1, 'test', {ct: 3, t: 4});
   });
 
   it('should add one player to CT', ()=>{

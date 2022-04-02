@@ -1,9 +1,43 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import Player from '../models/Player';
+import Arrow, {DIRECTION} from './Arrow';
 import {IRoundTableProps} from './RoundTable.interface';
-import {StyledHeader} from './RoundTable.styled';
+import {
+  StyledCell,
+  StyledHeader,
+  StyledHR,
+  StyledRoundLine,
+  StyledRoundScore,
+  StyledRoundTitle,
+  StyledScore,
+  StyledStatsWrapper,
+  StyledTable,
+  StyledTeamName,
+} from './RoundTable.styled';
 
-const RoundTable:FC<IRoundTableProps> = ({round})=>{
+const ColumnInfo = ()=>(
+  <>
+    <StyledHeader>
+      <StyledCell></StyledCell>
+      <StyledCell>K</StyledCell>
+      <StyledCell>D</StyledCell>
+      <StyledCell>A</StyledCell>
+      <StyledCell>+/-</StyledCell>
+      <StyledCell>K/D</StyledCell>
+      <StyledCell>ADR</StyledCell>
+      <StyledCell>HS%</StyledCell>
+    </StyledHeader>
+    <StyledHR />
+  </>
+);
+
+const RoundTable:FC<IRoundTableProps> = ({round, ct, terrorist})=>{
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handleRoundLineClick:React.MouseEventHandler<HTMLDivElement> = ()=>{
+    setIsOpen(!isOpen);
+  };
+
   const getRow = (player:Player)=>{
     let killDeathRatio = undefined;
     killDeathRatio = player.kills / player.deaths;
@@ -21,19 +55,19 @@ const RoundTable:FC<IRoundTableProps> = ({round})=>{
 
     return (
       <StyledHeader key={player.name}>
-        <div>{player.name}</div>
-        <div>{player.kills}</div>
-        <div>{player.deaths}</div>
-        <div>{player.assists}</div>
-        <div>{player.kills - player.deaths}</div>
+        <h5>{player.name}</h5>
+        <StyledCell>{player.kills}</StyledCell>
+        <StyledCell>{player.deaths}</StyledCell>
+        <StyledCell>{player.assists}</StyledCell>
+        <StyledCell>{player.kills - player.deaths}</StyledCell>
 
-        <div>{killDeathRatio}</div>
-        <div>{averageDamagePerRound}</div>
-        <div>
+        <StyledCell>{killDeathRatio}</StyledCell>
+        <StyledCell>{averageDamagePerRound}</StyledCell>
+        <StyledCell>
           {
             isNaN(headshotPercentage) +'  %'?'-':headshotPercentage.toFixed(2)
           }
-        </div>
+        </StyledCell>
       </StyledHeader>
     );
   };
@@ -41,20 +75,32 @@ const RoundTable:FC<IRoundTableProps> = ({round})=>{
 
   const tJsx = round.t.map((player)=>getRow(player));
   return (
-    <>
-      <StyledHeader>
-        <div></div>
-        <div>K</div>
-        <div>D</div>
-        <div>A</div>
-        <div>+/-</div>
-        <div>K/D</div>
-        <div>ADR</div>
-        <div>HS%</div>
-      </StyledHeader>
-      {ctJsx}
-      {tJsx}
-    </>
+    <StyledTable>
+      <StyledRoundLine onClick={handleRoundLineClick}>
+        <div><StyledRoundTitle>ROUND {round.number}</StyledRoundTitle></div>
+        <Arrow direction={isOpen?DIRECTION.DOWN:DIRECTION.UP} />
+      </StyledRoundLine>
+      <StyledStatsWrapper isOpen={isOpen}>
+        <br />
+        <ColumnInfo />
+        {ctJsx}
+        <StyledRoundScore>
+          <StyledTeamName>{ct.name}</StyledTeamName>
+
+          <StyledScore>
+            {round.number<16?
+                round.result.ct+' - '+round.result.t:
+                round.result.t+' - '+round.result.ct
+            }
+          </StyledScore>
+          <StyledTeamName>{terrorist.name}</StyledTeamName>
+
+        </StyledRoundScore>
+        <ColumnInfo />
+
+        {tJsx}
+      </StyledStatsWrapper>
+    </StyledTable>
   );
 };
 

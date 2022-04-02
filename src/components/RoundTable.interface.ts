@@ -1,3 +1,4 @@
+import {ITeam} from '../App.interface';
 import Round from '../models/Round';
 
 export enum ACTION_TYPE{
@@ -34,5 +35,7 @@ export interface IPlayerAttack extends PlayerAction{
 export type PlayerActionType = IPlayerKill | IPlayerAttack | IPlayerAssist
 
 export interface IRoundTableProps{
-    round:Round
+    round:Round,
+    ct:ITeam,
+    terrorist: ITeam
 }

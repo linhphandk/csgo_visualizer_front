@@ -7,6 +7,8 @@ module.exports = {
     'plugin:react/recommended',
     'google',
   ],
+  'ignorePatterns': ['*svg', '*.woff2'],
+
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
     'ecmaFeatures': {
